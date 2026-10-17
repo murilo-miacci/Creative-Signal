@@ -20,6 +20,13 @@ df.plot.hexbin(
 plt.show()
 ```
 
+**MATEMÁTICA:** Correlação de Pearson (Ordenado para `method='spearman'`)
+
+```python
+r = df["investimento"].corr(df["receita"])
+print(r)
+```
+
 ## Categórica x Numérica -> Boxplot
 
 ```python
@@ -44,6 +51,25 @@ plt.tight_layout()
 plt.show()
 ```
 
+**MATEMÁTICA:** Ponto bisserial
+
+```python
+from scipy.stats import pointbiserialr
+dados = df[["score", "converteu"]].dropna()
+r, p = pointbiserialr(
+    dados["converteu"].astype(int),
+    dados["score"],
+)
+print("Correlação:", r)
+print("Valor-p:", p)
+```
+
+Apenas o coeficiente:
+
+```python
+r = dados["score"].corr(dados["converteu"].astype(int))
+```
+
 ## Categórica x Categórica -> Barras de proporções
 
 ```python
@@ -62,6 +88,28 @@ plt.show()
 
 > [!NOTE]
 > normalize pode ser ='index', ='columns' ou =True
+
+**MATEMÁTICA:** Eta quadrado
+
+```python
+dados = df[["tipo", "score"]].dropna()
+grupos = dados.groupby("tipo", observed=True)["score"]
+medias = grupos.mean()
+tamanhos = grupos.size()
+media_geral = dados["score"].mean()
+variacao_entre = (
+    tamanhos * (medias - media_geral) ** 2
+).sum()
+variacao_total = (
+    (dados["score"] - media_geral) ** 2
+).sum()
+eta2 = (
+    variacao_entre / variacao_total
+    if variacao_total > 0
+    else float("nan")
+)
+print("Eta quadrado:", eta2)
+```
 
 ## Numérica x Booleana -> Proporção por faixa
 
@@ -83,6 +131,20 @@ plt.ylim(0, 100)
 plt.tight_layout()
 plt.show()
 print(resumo)
+```
+
+**MATEMÁTICA:** Tabela de Contingência & V de Cramér
+
+```python
+import pandas as pd
+from scipy.stats.contingency import association
+tabela = pd.crosstab(df["tipo"], df["plataforma"])
+v = association(
+    tabela.to_numpy(),
+    method="cramer",
+    correction=False,
+)
+print("V de Cramér:", v)
 ```
 
 ## Data x Numérica -> Linha
@@ -119,4 +181,20 @@ plt.ylabel("Conversão (%)")
 plt.ylim(0, 100)
 plt.tight_layout()
 plt.show()
+```
+
+## Booleana x Booleana
+
+**MATEMÁTICA:** phi (equivalente à correlação de Pearson, mas como 0 e 1)
+
+```python
+dados = df[["clicou", "comprou"]].dropna().astype(int)
+phi = dados["clicou"].corr(dados["comprou"])
+print("Phi:", phi)
+```
+
+Comparar a proporção:
+
+```python
+print(df.groupby("clicou")["comprou"].mean())
 ```
