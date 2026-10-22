@@ -57,6 +57,9 @@ def platformxscore(raw: pd.DataFrame) -> None:
 
     """
     df = raw[["platform", "klike_score"]].dropna()
+    df["platform"] = pd.Categorical(
+        df["platform"], categories=["Meta", "TikTok", "LinkedIn"]
+    )
     groups = df.groupby("platform", observed=True)["klike_score"]
     resume = groups.agg(["count", "mean", "median", "std"])
     print(resume)
@@ -84,6 +87,9 @@ def formatxscore(raw: pd.DataFrame) -> None:
     relevante o maior valor observado no formato vertical.
     """
     df = raw[["format", "klike_score"]]
+    df["format"] = pd.Categorical(
+        df["format"], categories=["vertical", "horizontal", "quadrado"]
+    )
     groups = df.groupby("format", observed=True)["klike_score"]
     resume = groups.agg(["count", "mean", "median", "std"])
     print(resume)
