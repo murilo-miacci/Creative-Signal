@@ -74,9 +74,34 @@ def platformxscore(raw: pd.DataFrame) -> None:
     plt.show()
 
 
+def formatxscore(raw: pd.DataFrame) -> None:
+    """
+    ———————————————————————————————————————————————————————————————————————————
+    Formato x Score
+    (Vertical, Horizontal, Quadrado)
+    ———————————————————————————————————————————————————————————————————————————
+    Os formatos não apresentam forte associação com o score, sendo pouco
+    relevante o maior valor observado no formato vertical.
+    """
+    df = raw[["format", "klike_score"]]
+    groups = df.groupby("format", observed=True)["klike_score"]
+    resume = groups.agg(["count", "mean", "median", "std"])
+    print(resume)
+
+    df.boxplot(column="klike_score", by="format", grid=False)
+    plt.title("Score por Formato de Criativo")
+    plt.suptitle("")
+    plt.xlabel("Formato")
+    plt.ylabel("Score")
+    plt.xticks(rotation=30)
+    plt.tight_layout()
+    plt.show()
+
+
 # =============================================================================
 #                              Painel EDA (Score)
 # =============================================================================
 # On/Off -> '#'
 
-platformxscore(dados)  # Gráfico Boxplot + Estatísticas
+# platformxscore(dados)  # Gráfico Boxplot + Estatísticas (Terminal)
+# formatxscore(dados)  # Gráfico Boxplot + Estatísticas (Terminal)
