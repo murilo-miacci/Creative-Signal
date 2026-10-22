@@ -8,7 +8,7 @@ Neste desafio, você vai trabalhar com um dataset simulado inspirado em dados re
 
 ## 📋 Contexto
 
-Você recebeu um dataset (klike_challenge_dataset.csv) contendo **500 registros de campanhas de vídeo** veiculadas em diferentes plataformas. Cada registro representa um criativo de vídeo com seus atributos e métricas de performance.
+Você recebeu um dataset (klike_challenge_dataset.csv -> campaigns.csv) contendo **500 registros de campanhas de vídeo** veiculadas em diferentes plataformas. Cada registro representa um criativo de vídeo com seus atributos e métricas de performance.
 
 O **Klike Score** (coluna klike_score) é uma pontuação de 0 a 100 que representa a qualidade geral do criativo, calculada por nosso sistema de IA com base em múltiplos fatores.
 
