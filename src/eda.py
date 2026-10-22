@@ -128,6 +128,34 @@ def subtitlexscore(raw: pd.DataFrame) -> None:
     plt.show()
 
 
+def categoryxscore(raw: pd.DataFrame) -> None:
+    """
+    ———————————————————————————————————————————————————————————————————————————
+    Category x Score
+    (Branding, App Install, SaaS, Lead Gen, E-commerce)
+    ———————————————————————————————————————————————————————————————————————————
+    Saas e E-commerce aparecem com valores insuficientemente maiores para uma
+    conclusão de associação com o score.
+    """
+    df = raw[["category", "klike_score"]]
+    df["category"] = pd.Categorical(
+        df["category"],
+        categories=["Branding", "App Install", "SaaS", "Lead Gen", "E-commerce"],
+    )
+    groups = df.groupby("category", observed=True)
+    resume = groups.agg(["count", "mean", "median", "std"])
+    print(resume)
+
+    df.boxplot(column="klike_score", by="category", grid=False)
+    plt.title("Score por Categoria de Criativo de Anúncio")
+    plt.suptitle("")
+    plt.xlabel("Categoria")
+    plt.ylabel("Score")
+    plt.xticks(rotation=30)
+    plt.tight_layout()
+    plt.show()
+
+
 # =============================================================================
 #                              Painel EDA (Score)
 # =============================================================================
@@ -135,4 +163,5 @@ def subtitlexscore(raw: pd.DataFrame) -> None:
 
 # platformxscore(dados)  # Gráfico Boxplot + Estatísticas (Terminal)
 # formatxscore(dados)  # Gráfico Boxplot + Estatísticas (Terminal)
-subtitlexscore(dados)  # Gráfico Boxplot + Estatísticas (Terminal)
+# subtitlexscore(dados)  # Gráfico Boxplot + Estatísticas (Terminal)
+# categoryxscore(dados) # Gráfico Boxplot + Estatísticas (Terminal)
