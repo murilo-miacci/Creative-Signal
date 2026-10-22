@@ -1,8 +1,9 @@
 [project]
-name = "klike"
+name = "creative-signal"
 version = "0.1.0"
 requires-python = ">=3.14"
 dependencies = [
+    "matplotlib>=3.11.2",
     "mypy>=2.4.0",
     "pandas>=3.0.6",
     "pylint>=4.1.3",
