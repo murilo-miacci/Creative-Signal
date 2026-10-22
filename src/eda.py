@@ -104,6 +104,30 @@ def formatxscore(raw: pd.DataFrame) -> None:
     plt.show()
 
 
+def subtitlexscore(raw: pd.DataFrame) -> None:
+    """
+    ———————————————————————————————————————————————————————————————————————————
+    Legenda x Score
+    (True, False)
+    ———————————————————————————————————————————————————————————————————————————
+    A presença de legenda é um bom indicativo de aumento no score, uma vez que
+    sua média e mediana são relativamente maiores.
+    """
+    df = raw[["has_subtitle", "klike_score"]]
+    groups = df.groupby("has_subtitle", observed=True)
+    resume = groups.agg(["count", "mean", "median", "std"])
+    print(resume)
+
+    df.boxplot(column="klike_score", by="has_subtitle", grid=False)
+    plt.title("Score por Presença de Legenda")
+    plt.suptitle("")
+    plt.xlabel("Possui legenda?")
+    plt.ylabel("Score")
+    plt.xticks(rotation=30)
+    plt.tight_layout()
+    plt.show()
+
+
 # =============================================================================
 #                              Painel EDA (Score)
 # =============================================================================
@@ -111,3 +135,4 @@ def formatxscore(raw: pd.DataFrame) -> None:
 
 # platformxscore(dados)  # Gráfico Boxplot + Estatísticas (Terminal)
 # formatxscore(dados)  # Gráfico Boxplot + Estatísticas (Terminal)
+subtitlexscore(dados)  # Gráfico Boxplot + Estatísticas (Terminal)
