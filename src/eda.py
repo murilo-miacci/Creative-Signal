@@ -294,7 +294,7 @@ def videodurationxscore(raw: pd.DataFrame) -> None:
 def ctaxscore(raw: pd.DataFrame) -> None:
     """
     ———————————————————————————————————————————————————————————————————————————
-    CTA (Call To Action) x Score
+    Presentça de CTA (Call To Action) x Score
     (True, False)
     ———————————————————————————————————————————————————————————————————————————
     A presença de CTA no criativo se relaciona com uma maior taxa de score
@@ -306,7 +306,7 @@ def ctaxscore(raw: pd.DataFrame) -> None:
     print(resume)
 
     df.boxplot(column="klike_score", by="has_cta", grid=False)
-    plt.title("Score por Presença de CTA")
+    plt.title("Score por Presença de CTA no Criativo")
     plt.suptitle("")
     plt.xlabel("CTA?")
     plt.ylabel("Score")
@@ -318,7 +318,7 @@ def ctaxscore(raw: pd.DataFrame) -> None:
 def hookxscore(raw: pd.DataFrame) -> None:
     """
     ———————————————————————————————————————————————————————————————————————————
-    Hook x Score
+    Presença de Hook x Score
     (True, False)
     ———————————————————————————————————————————————————————————————————————————
     A presença de hook no criativo se relaciona com o aumento do score.
@@ -329,9 +329,32 @@ def hookxscore(raw: pd.DataFrame) -> None:
     print(resume)
 
     df.boxplot(column="klike_score", by="has_hook", grid=False)
-    plt.title("Score por Presença de Hook")
+    plt.title("Score por Presença de Hook no Criativo")
     plt.suptitle("")
     plt.xlabel("Hook?")
+    plt.ylabel("Score")
+    plt.xticks(rotation=30)
+    plt.tight_layout()
+    plt.show()
+
+
+def facexscore(raw: pd.DataFrame) -> None:
+    """
+    ———————————————————————————————————————————————————————————————————————————
+    Presença de Rosto x Score
+    (True, False)
+    ———————————————————————————————————————————————————————————————————————————
+    A presença de rosto no criativo se relaciona com o aumento do score.
+    """
+    df = raw[["has_face", "klike_score"]]
+    groups = df.groupby("has_face", observed=True)
+    resume = groups.agg(["count", "mean", "median", "std"])
+    print(resume)
+
+    df.boxplot(column="klike_score", by="has_face", grid=False)
+    plt.title("Score por Presença de Rosto no Criativo")
+    plt.suptitle("")
+    plt.xlabel("Rosto?")
     plt.ylabel("Score")
     plt.xticks(rotation=30)
     plt.tight_layout()
@@ -352,4 +375,5 @@ def hookxscore(raw: pd.DataFrame) -> None:
 # retargetingxscore(dados)  # Gráfico Boxplot + Estatísticas (Terminal)
 # videodurationxscore(dados)  # Gráfico Scatter + Pearson e Spearman (Terminal)
 # ctaxscore(dados)  # Gráfico Boxplot + Estatísticas (Terminal)
-hookxscore(dados)  # Gráfico Boxplot + Estatísticas (Terminal)
+# hookxscore(dados)  # Gráfico Boxplot + Estatísticas (Terminal)
+facexscore(dados)  # Gráfico Boxplot + Estatísticas (Terminal)
