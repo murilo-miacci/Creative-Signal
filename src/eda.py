@@ -315,6 +315,29 @@ def ctaxscore(raw: pd.DataFrame) -> None:
     plt.show()
 
 
+def hookxscore(raw: pd.DataFrame) -> None:
+    """
+    ———————————————————————————————————————————————————————————————————————————
+    Hook x Score
+    (True, False)
+    ———————————————————————————————————————————————————————————————————————————
+    A presença de hook no criativo se relaciona com o aumento do score.
+    """
+    df = raw[["has_hook", "klike_score"]]
+    groups = df.groupby("has_hook", observed=True)
+    resume = groups.agg(["count", "mean", "median", "std"])
+    print(resume)
+
+    df.boxplot(column="klike_score", by="has_hook", grid=False)
+    plt.title("Score por Presença de Hook")
+    plt.suptitle("")
+    plt.xlabel("Hook?")
+    plt.ylabel("Score")
+    plt.xticks(rotation=30)
+    plt.tight_layout()
+    plt.show()
+
+
 # =============================================================================
 #                              Painel EDA (Score)
 # =============================================================================
@@ -325,7 +348,8 @@ def ctaxscore(raw: pd.DataFrame) -> None:
 # subtitlexscore(dados)  # Gráfico Boxplot + Estatísticas (Terminal)
 # categoryxscore(dados)  # Gráfico Boxplot + Estatísticas (Terminal)
 # objectivexscore(dados)  # Gráfico Boxplot + Estatísticas (Terminal)
-# agexscore(dados)  #  Gráfico Boxplot + Estatísticas (Terminal)
+# agexscore(dados)  # Gráfico Boxplot + Estatísticas (Terminal)
 # retargetingxscore(dados)  # Gráfico Boxplot + Estatísticas (Terminal)
-# videodurationxscore(dados)  #  Gráfico Scatter + Pearson e Spearman (Terminal)
-ctaxscore(dados)  #  Gráfico Boxplot + Estatísticas (Terminal)
+# videodurationxscore(dados)  # Gráfico Scatter + Pearson e Spearman (Terminal)
+# ctaxscore(dados)  # Gráfico Boxplot + Estatísticas (Terminal)
+hookxscore(dados)  # Gráfico Boxplot + Estatísticas (Terminal)
