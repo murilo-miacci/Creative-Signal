@@ -291,6 +291,30 @@ def videodurationxscore(raw: pd.DataFrame) -> None:
     plt.show()
 
 
+def ctaxscore(raw: pd.DataFrame) -> None:
+    """
+    ———————————————————————————————————————————————————————————————————————————
+    CTA (Call To Action) x Score
+    (True, False)
+    ———————————————————————————————————————————————————————————————————————————
+    A presença de CTA no criativo se relaciona com uma maior taxa de score
+    observado.
+    """
+    df = raw[["has_cta", "klike_score"]]
+    groups = df.groupby("has_cta", observed=True)
+    resume = groups.agg(["count", "mean", "median", "std"])
+    print(resume)
+
+    df.boxplot(column="klike_score", by="has_cta", grid=False)
+    plt.title("Score por Presença de CTA")
+    plt.suptitle("")
+    plt.xlabel("CTA?")
+    plt.ylabel("Score")
+    plt.xticks(rotation=30)
+    plt.tight_layout()
+    plt.show()
+
+
 # =============================================================================
 #                              Painel EDA (Score)
 # =============================================================================
@@ -304,3 +328,4 @@ def videodurationxscore(raw: pd.DataFrame) -> None:
 # agexscore(dados)  #  Gráfico Boxplot + Estatísticas (Terminal)
 # retargetingxscore(dados)  # Gráfico Boxplot + Estatísticas (Terminal)
 # videodurationxscore(dados)  #  Gráfico Scatter + Pearson e Spearman (Terminal)
+ctaxscore(dados)  #  Gráfico Boxplot + Estatísticas (Terminal)
