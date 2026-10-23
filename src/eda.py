@@ -141,7 +141,7 @@ def subtitlexscore(raw: pd.DataFrame) -> None:
     A presença de legenda é um bom indicativo de aumento no score, uma vez que
     sua média e mediana são relativamente maiores.
     """
-    df = raw[["has_subtitle", "klike_score"]]
+    df = raw[["has_subtitle", "klike_score"]].dropna()
     groups = df.groupby("has_subtitle", observed=True)
     resume = groups.agg(["count", "mean", "median", "std"])
     print(resume)
@@ -264,6 +264,33 @@ def retargetingxscore(raw: pd.DataFrame) -> None:
     plt.show()
 
 
+def videodurationxscore(raw: pd.DataFrame) -> None:
+    """
+    ———————————————————————————————————————————————————————————————————————————
+    Duração do Vídeo x Score
+    (Duração em segundos [s])
+    ———————————————————————————————————————————————————————————————————————————
+    É observado pelas correlações de Pearson e Spearman que com o aumento da
+    duração do vídeo há uma ligeira diminuição do score (~1,4%) e a tendência é
+    diminuir o score (~3,8%), respectivamente.
+    """
+    df = raw[["video_duration_s", "klike_score"]].dropna()
+
+    pearson = df["video_duration_s"].corr(df["klike_score"])
+    print(f"Correlação (Pearson): {pearson}")
+    spearman = df["video_duration_s"].corr(df["klike_score"], method="spearman")
+    print(f"Correlação (Spearman): {spearman}")
+
+    df.plot.scatter(x="video_duration_s", y="klike_score", alpha=0.5)
+    plt.title("Score por Duração de Vídeo")
+    plt.suptitle("")
+    plt.xlabel("Tempo [s]")
+    plt.ylabel("Score")
+    plt.xticks(rotation=30)
+    plt.tight_layout()
+    plt.show()
+
+
 # =============================================================================
 #                              Painel EDA (Score)
 # =============================================================================
@@ -275,4 +302,5 @@ def retargetingxscore(raw: pd.DataFrame) -> None:
 # categoryxscore(dados)  # Gráfico Boxplot + Estatísticas (Terminal)
 # objectivexscore(dados)  # Gráfico Boxplot + Estatísticas (Terminal)
 # agexscore(dados)  #  Gráfico Boxplot + Estatísticas (Terminal)
-retargetingxscore(dados)  # Gráfico Boxplot + Estatísticas (Terminal)
+# retargetingxscore(dados)  # Gráfico Boxplot + Estatísticas (Terminal)
+# videodurationxscore(dados)  #  Gráfico Scatter + Pearson e Spearman (Terminal)
