@@ -240,6 +240,30 @@ def agexscore(raw: pd.DataFrame) -> None:
     plt.show()
 
 
+def retargetingxscore(raw: pd.DataFrame) -> None:
+    """
+    ———————————————————————————————————————————————————————————————————————————
+    Retargeting x Score
+    (True, False)
+    ———————————————————————————————————————————————————————————————————————————
+    Quando o anúncio do criativo é visto mais de uma vez, o score tende a haver
+    um aumento, porém, não tão significante a ponto de deixar clara uma relação.
+    """
+    df = raw[["is_retargeting", "klike_score"]]
+    groups = df.groupby("is_retargeting", observed=True)
+    resume = groups.agg(["count", "mean", "median", "std"])
+    print(resume)
+
+    df.boxplot(column="klike_score", by="is_retargeting", grid=False)
+    plt.title("Score por Retargeting")
+    plt.suptitle("")
+    plt.xlabel("Retarget?")
+    plt.ylabel("Score")
+    plt.xticks(rotation=30)
+    plt.tight_layout()
+    plt.show()
+
+
 # =============================================================================
 #                              Painel EDA (Score)
 # =============================================================================
@@ -251,3 +275,4 @@ def agexscore(raw: pd.DataFrame) -> None:
 # categoryxscore(dados)  # Gráfico Boxplot + Estatísticas (Terminal)
 # objectivexscore(dados)  # Gráfico Boxplot + Estatísticas (Terminal)
 # agexscore(dados)  #  Gráfico Boxplot + Estatísticas (Terminal)
+retargetingxscore(dados)  # Gráfico Boxplot + Estatísticas (Terminal)
