@@ -134,8 +134,8 @@ def categoryxscore(raw: pd.DataFrame) -> None:
     Category x Score
     (Branding, App Install, SaaS, Lead Gen, E-commerce)
     ———————————————————————————————————————————————————————————————————————————
-    Saas e E-commerce aparecem com valores insuficientemente maiores para uma
-    conclusão de associação com o score.
+    Saas e E-commerce aparecem com valores de média e mediana insuficientemente
+    maiores para uma conclusão de associação com o score.
     """
     df = raw[["category", "klike_score"]]
     df["category"] = pd.Categorical(
@@ -156,6 +156,34 @@ def categoryxscore(raw: pd.DataFrame) -> None:
     plt.show()
 
 
+def objectivexscore(raw: pd.DataFrame) -> None:
+    """
+    ———————————————————————————————————————————————————————————————————————————
+    Objetivo x Score
+    (awareness, traffic, conversions, engagement, app_install)
+    ———————————————————————————————————————————————————————————————————————————
+    Conversions aparece com maior média e mediana, mas é um dado quase
+    irrelevante dado a proximidade com os outros valores extremamente próximos.
+    """
+    df = raw[["objective", "klike_score"]]
+    df["objective"] = pd.Categorical(
+        df["objective"],
+        categories=["awareness", "traffic", "conversions", "engagement", "app_install"],
+    )
+    groups = df.groupby("objective", observed=True)
+    resume = groups.agg(["count", "mean", "median", "std"])
+    print(resume)
+
+    df.boxplot(column="klike_score", by="objective", grid=False)
+    plt.title("Score por Objetivo do Criativo")
+    plt.suptitle("")
+    plt.xlabel("Objetivo")
+    plt.ylabel("Score")
+    plt.xticks(rotation=30)
+    plt.tight_layout()
+    plt.show()
+
+
 # =============================================================================
 #                              Painel EDA (Score)
 # =============================================================================
@@ -164,4 +192,5 @@ def categoryxscore(raw: pd.DataFrame) -> None:
 # platformxscore(dados)  # Gráfico Boxplot + Estatísticas (Terminal)
 # formatxscore(dados)  # Gráfico Boxplot + Estatísticas (Terminal)
 # subtitlexscore(dados)  # Gráfico Boxplot + Estatísticas (Terminal)
-# categoryxscore(dados) # Gráfico Boxplot + Estatísticas (Terminal)
+# categoryxscore(dados)  # Gráfico Boxplot + Estatísticas (Terminal)
+# objectivexscore(dados)  # Gráfico Boxplot + Estatísticas (Terminal)
