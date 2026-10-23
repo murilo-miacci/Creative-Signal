@@ -11,6 +11,34 @@ dados = pd.read_csv("data/campaigns.csv")
 # dados.to_html("dados.html")
 # Melhor pra vizualização o tempo todo em live server
 
+# print(dados.dtypes)
+# campaign_id                str
+# date                       str
+# platform                   str
+# category                   str
+# objective                  str
+# target_audience_age        str
+# is_retargeting            bool
+# video_duration_s       float64
+# format                     str
+# has_subtitle            object
+# has_cta                   bool
+# has_hook                  bool
+# has_face                  bool
+# text_density               str
+# music_voice_ratio      float64
+# impressions              int64
+# clicks                   int64
+# ctr                    float64
+# cpc                    float64
+# spend                  float64
+# conversions              int64
+# revenue                float64
+# roas                   float64
+# avg_watch_time_s       float64
+# engagement_rate        float64
+# klike_score            float64
+
 # print(dados.isna().sum())
 # nºNA > 0
 # video_duration_s   39
@@ -184,6 +212,34 @@ def objectivexscore(raw: pd.DataFrame) -> None:
     plt.show()
 
 
+def agexscore(raw: pd.DataFrame) -> None:
+    """
+    ———————————————————————————————————————————————————————————————————————————
+    Faixa de Idade Alvo x Score
+    (18-24, 25-34, 35-44, 45+)
+    ———————————————————————————————————————————————————————————————————————————
+    É aparente que o público com as idades entre 25-34 são dos criativos que
+    obtêm melhores scores. Não é uma relação forte, mas é relevante.
+    """
+    df = raw[["target_audience_age", "klike_score"]]
+    df["target_audience_age"] = pd.Categorical(
+        df["target_audience_age"],
+        categories=["18-24", "25-34", "35-44", "45+"],
+    )
+    groups = df.groupby("target_audience_age", observed=True)
+    resume = groups.agg(["count", "mean", "median", "std"])
+    print(resume)
+
+    df.boxplot(column="klike_score", by="target_audience_age", grid=False)
+    plt.title("Score por Faixa de Idade Alvo")
+    plt.suptitle("")
+    plt.xlabel("Faixa de Idade")
+    plt.ylabel("Score")
+    plt.xticks(rotation=30)
+    plt.tight_layout()
+    plt.show()
+
+
 # =============================================================================
 #                              Painel EDA (Score)
 # =============================================================================
@@ -194,3 +250,4 @@ def objectivexscore(raw: pd.DataFrame) -> None:
 # subtitlexscore(dados)  # Gráfico Boxplot + Estatísticas (Terminal)
 # categoryxscore(dados)  # Gráfico Boxplot + Estatísticas (Terminal)
 # objectivexscore(dados)  # Gráfico Boxplot + Estatísticas (Terminal)
+# agexscore(dados)  #  Gráfico Boxplot + Estatísticas (Terminal)
