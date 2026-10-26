@@ -551,6 +551,33 @@ def spendxscore(raw: pd.DataFrame) -> None:
     plt.show()
 
 
+def revenuexscore(raw: pd.DataFrame) -> None:
+    """
+    ———————————————————————————————————————————————————————————————————————————
+    Receita x Score
+    (Receita gerada [R$])
+    ———————————————————————————————————————————————————————————————————————————
+    A receita apresenta uma relação positiva fraca em Pearson (0,137),
+    sendo mais evidente em Spearman (0,320). É observada uma tendência de
+    scores maiores nos criativos com maior receita, porém com dispersão.
+    """
+    df = raw[["revenue", "klike_score"]].dropna()
+
+    pearson = df["revenue"].corr(df["klike_score"])
+    print(f"Correlação (Pearson): {pearson}")
+    spearman = df["revenue"].corr(df["klike_score"], method="spearman")
+    print(f"Correlação (Spearman): {spearman}")
+
+    df.plot.scatter(x="revenue", y="klike_score", alpha=0.5)
+    plt.title("Score por Receita Gerada")
+    plt.suptitle("")
+    plt.xlabel("Receita [R$]")
+    plt.ylabel("Score")
+    plt.xticks(rotation=30)
+    plt.tight_layout()
+    plt.show()
+
+
 # =============================================================================
 #                              Painel EDA (Score)
 # =============================================================================
@@ -573,4 +600,5 @@ def spendxscore(raw: pd.DataFrame) -> None:
 # clicksxscore(dados)  # Gráfico Scatter + Pearson e Spearman (Terminal)
 # ctrxscore(dados)  # Gráfico Scatter + Pearson e Spearman (Terminal)
 # cpcxscore(dados)  # Gráfico Scatter + Pearson e Spearman (Terminal)
-spendxscore(dados)  # Gráfico Scatter + Pearson e Spearman (Terminal)
+# spendxscore(dados)  # Gráfico Scatter + Pearson e Spearman (Terminal)
+revenuexscore(dados)  # Gráfico Scatter + Pearson e Spearman (Terminal)
