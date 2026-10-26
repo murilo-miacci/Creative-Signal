@@ -390,6 +390,32 @@ def textxscore(raw: pd.DataFrame) -> None:
     plt.show()
 
 
+def musicvoicexscore(raw: pd.DataFrame) -> None:
+    """
+    ———————————————————————————————————————————————————————————————————————————
+    Relação Música e Voz x Score
+    (Duração em segundos [s])
+    ———————————————————————————————————————————————————————————————————————————
+    É visto uma baixa, porém levemente considerável, tendência de que com o
+    aumento da Música com a Voz no criativo, há uma diminuição do score.
+    """
+    df = raw[["music_voice_ratio", "klike_score"]].dropna()
+
+    pearson = df["music_voice_ratio"].corr(df["klike_score"])
+    print(f"Correlação (Pearson): {pearson}")
+    spearman = df["music_voice_ratio"].corr(df["klike_score"], method="spearman")
+    print(f"Correlação (Spearman): {spearman}")
+
+    df.plot.scatter(x="music_voice_ratio", y="klike_score", alpha=0.5)
+    plt.title("Score pela Relação de Música e Voz no criativo")
+    plt.suptitle("")
+    plt.xlabel("Relação Musica x Voz")
+    plt.ylabel("Score")
+    plt.xticks(rotation=30)
+    plt.tight_layout()
+    plt.show()
+
+
 # =============================================================================
 #                              Painel EDA (Score)
 # =============================================================================
@@ -406,4 +432,5 @@ def textxscore(raw: pd.DataFrame) -> None:
 # ctaxscore(dados)  # Gráfico Boxplot + Estatísticas (Terminal)
 # hookxscore(dados)  # Gráfico Boxplot + Estatísticas (Terminal)
 # facexscore(dados)  # Gráfico Boxplot + Estatísticas (Terminal)
-textxscore(dados)
+# textxscore(dados)  # Gráfico Boxplot + Estatísticas (Terminal)
+musicvoicexscore(dados)  # Gráfico Scatter + Pearson e Spearman (Terminal)
