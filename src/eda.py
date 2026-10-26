@@ -443,6 +443,33 @@ def impressionsxscore(raw: pd.DataFrame) -> None:
     plt.show()
 
 
+def clicksxscore(raw: pd.DataFrame) -> None:
+    """
+    ———————————————————————————————————————————————————————————————————————————
+    Cliques x Score
+    (Número de cliques)
+    ———————————————————————————————————————————————————————————————————————————
+    É observada uma relação positiva entre o número de cliques e o score,
+    fraca em Pearson (0,152) e mais evidente em Spearman (0,303). A tendência
+    é de scores maiores nos criativos com mais cliques, porém com dispersão.
+    """
+    df = raw[["clicks", "klike_score"]].dropna()
+
+    pearson = df["clicks"].corr(df["klike_score"])
+    print(f"Correlação (Pearson): {pearson}")
+    spearman = df["clicks"].corr(df["klike_score"], method="spearman")
+    print(f"Correlação (Spearman): {spearman}")
+
+    df.plot.scatter(x="clicks", y="klike_score", alpha=0.5)
+    plt.title("Score por Número de Cliques")
+    plt.suptitle("")
+    plt.xlabel("Cliques")
+    plt.ylabel("Score")
+    plt.xticks(rotation=30)
+    plt.tight_layout()
+    plt.show()
+
+
 # =============================================================================
 #                              Painel EDA (Score)
 # =============================================================================
@@ -461,4 +488,5 @@ def impressionsxscore(raw: pd.DataFrame) -> None:
 # facexscore(dados)  # Gráfico Boxplot + Estatísticas (Terminal)
 # textxscore(dados)  # Gráfico Boxplot + Estatísticas (Terminal)
 # musicvoicexscore(dados)  # Gráfico Scatter + Pearson e Spearman (Terminal)
-impressionsxscore(dados)  # Gráfico Scatter + Pearson e Spearman (Terminal)
+# impressionsxscore(dados)  # Gráfico Scatter + Pearson e Spearman (Terminal)
+clicksxscore(dados)  # Gráfico Scatter + Pearson e Spearman (Terminal)
