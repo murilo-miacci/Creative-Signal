@@ -632,6 +632,33 @@ def avg_watch_timexscore(raw: pd.DataFrame) -> None:
     plt.show()
 
 
+def engagement_ratexscore(raw: pd.DataFrame) -> None:
+    """
+    ———————————————————————————————————————————————————————————————————————————
+    Taxa de Engajamento x Score
+    (Taxa de engajamento)
+    ———————————————————————————————————————————————————————————————————————————
+    A taxa de engajamento apresenta uma associação positiva fraca com o
+    score, com Pearson de 0,236 e Spearman de 0,295. Criativos com maior
+    engajamento tendem a apresentar scores maiores, porém com dispersão.
+    """
+    df = raw[["engagement_rate", "klike_score"]].dropna()
+
+    pearson = df["engagement_rate"].corr(df["klike_score"])
+    print(f"Correlação (Pearson): {pearson}")
+    spearman = df["engagement_rate"].corr(df["klike_score"], method="spearman")
+    print(f"Correlação (Spearman): {spearman}")
+
+    df.plot.scatter(x="engagement_rate", y="klike_score", alpha=0.5)
+    plt.title("Score por Taxa de Engajamento")
+    plt.suptitle("")
+    plt.xlabel("Taxa de Engajamento")
+    plt.ylabel("Score")
+    plt.xticks(rotation=30)
+    plt.tight_layout()
+    plt.show()
+
+
 # =============================================================================
 #                              Painel EDA (Score)
 # =============================================================================
@@ -657,4 +684,5 @@ def avg_watch_timexscore(raw: pd.DataFrame) -> None:
 # spendxscore(dados)  # Gráfico Scatter + Pearson e Spearman (Terminal)
 # revenuexscore(dados)  # Gráfico Scatter + Pearson e Spearman (Terminal)
 # roasxscore(dados)  # Gráfico Scatter + Pearson e Spearman (Terminal)
-avg_watch_timexscore(dados)  # Gráfico Scatter + Pearson e Spearman (Terminal)
+# avg_watch_timexscore(dados)  # Gráfico Scatter + Pearson e Spearman (Terminal)
+engagement_ratexscore(dados)  # Gráfico Scatter + Pearson e Spearman (Terminal)
