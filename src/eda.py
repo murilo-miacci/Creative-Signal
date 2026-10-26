@@ -524,6 +524,33 @@ def cpcxscore(raw: pd.DataFrame) -> None:
     plt.show()
 
 
+def spendxscore(raw: pd.DataFrame) -> None:
+    """
+    ———————————————————————————————————————————————————————————————————————————
+    Gasto Total x Score
+    (Gasto total [R$])
+    ———————————————————————————————————————————————————————————————————————————
+    O gasto total apresenta uma correlação linear muito baixa com o score
+    (Pearson de 0,052), mas uma tendência positiva fraca em Spearman (0,237).
+    Maiores gastos se associam levemente a scores maiores, com dispersão.
+    """
+    df = raw[["spend", "klike_score"]].dropna()
+
+    pearson = df["spend"].corr(df["klike_score"])
+    print(f"Correlação (Pearson): {pearson}")
+    spearman = df["spend"].corr(df["klike_score"], method="spearman")
+    print(f"Correlação (Spearman): {spearman}")
+
+    df.plot.scatter(x="spend", y="klike_score", alpha=0.5)
+    plt.title("Score por Gasto Total")
+    plt.suptitle("")
+    plt.xlabel("Gasto [R$]")
+    plt.ylabel("Score")
+    plt.xticks(rotation=30)
+    plt.tight_layout()
+    plt.show()
+
+
 # =============================================================================
 #                              Painel EDA (Score)
 # =============================================================================
@@ -545,4 +572,5 @@ def cpcxscore(raw: pd.DataFrame) -> None:
 # impressionsxscore(dados)  # Gráfico Scatter + Pearson e Spearman (Terminal)
 # clicksxscore(dados)  # Gráfico Scatter + Pearson e Spearman (Terminal)
 # ctrxscore(dados)  # Gráfico Scatter + Pearson e Spearman (Terminal)
-cpcxscore(dados)  # Gráfico Scatter + Pearson e Spearman (Terminal)
+# cpcxscore(dados)  # Gráfico Scatter + Pearson e Spearman (Terminal)
+spendxscore(dados)  # Gráfico Scatter + Pearson e Spearman (Terminal)
