@@ -605,6 +605,33 @@ def roasxscore(raw: pd.DataFrame) -> None:
     plt.show()
 
 
+def avg_watch_timexscore(raw: pd.DataFrame) -> None:
+    """
+    ———————————————————————————————————————————————————————————————————————————
+    Tempo Médio de Visualização x Score
+    (Tempo médio em segundos [s])
+    ———————————————————————————————————————————————————————————————————————————
+    É observada uma associação positiva fraca entre o tempo médio de
+    visualização e o score, com Pearson de 0,186 e Spearman de 0,204. A
+    tendência é de scores ligeiramente maiores com mais tempo assistido.
+    """
+    df = raw[["avg_watch_time_s", "klike_score"]].dropna()
+
+    pearson = df["avg_watch_time_s"].corr(df["klike_score"])
+    print(f"Correlação (Pearson): {pearson}")
+    spearman = df["avg_watch_time_s"].corr(df["klike_score"], method="spearman")
+    print(f"Correlação (Spearman): {spearman}")
+
+    df.plot.scatter(x="avg_watch_time_s", y="klike_score", alpha=0.5)
+    plt.title("Score por Tempo Médio de Visualização")
+    plt.suptitle("")
+    plt.xlabel("Tempo Médio [s]")
+    plt.ylabel("Score")
+    plt.xticks(rotation=30)
+    plt.tight_layout()
+    plt.show()
+
+
 # =============================================================================
 #                              Painel EDA (Score)
 # =============================================================================
@@ -629,4 +656,5 @@ def roasxscore(raw: pd.DataFrame) -> None:
 # cpcxscore(dados)  # Gráfico Scatter + Pearson e Spearman (Terminal)
 # spendxscore(dados)  # Gráfico Scatter + Pearson e Spearman (Terminal)
 # revenuexscore(dados)  # Gráfico Scatter + Pearson e Spearman (Terminal)
-roasxscore(dados)  # Gráfico Scatter + Pearson e Spearman (Terminal)
+# roasxscore(dados)  # Gráfico Scatter + Pearson e Spearman (Terminal)
+avg_watch_timexscore(dados)  # Gráfico Scatter + Pearson e Spearman (Terminal)
