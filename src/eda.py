@@ -497,6 +497,33 @@ def ctrxscore(raw: pd.DataFrame) -> None:
     plt.show()
 
 
+def cpcxscore(raw: pd.DataFrame) -> None:
+    """
+    ———————————————————————————————————————————————————————————————————————————
+    CPC x Score
+    (Custo por clique [R$])
+    ———————————————————————————————————————————————————————————————————————————
+    O custo por clique apresenta uma relação negativa fraca com o score,
+    com Pearson de -0,105 e Spearman de -0,089. É vista uma ligeira tendência
+    de scores menores com o aumento do CPC, porém pouco relevante.
+    """
+    df = raw[["cpc", "klike_score"]].dropna()
+
+    pearson = df["cpc"].corr(df["klike_score"])
+    print(f"Correlação (Pearson): {pearson}")
+    spearman = df["cpc"].corr(df["klike_score"], method="spearman")
+    print(f"Correlação (Spearman): {spearman}")
+
+    df.plot.scatter(x="cpc", y="klike_score", alpha=0.5)
+    plt.title("Score por Custo por Clique")
+    plt.suptitle("")
+    plt.xlabel("CPC [R$]")
+    plt.ylabel("Score")
+    plt.xticks(rotation=30)
+    plt.tight_layout()
+    plt.show()
+
+
 # =============================================================================
 #                              Painel EDA (Score)
 # =============================================================================
@@ -517,4 +544,5 @@ def ctrxscore(raw: pd.DataFrame) -> None:
 # musicvoicexscore(dados)  # Gráfico Scatter + Pearson e Spearman (Terminal)
 # impressionsxscore(dados)  # Gráfico Scatter + Pearson e Spearman (Terminal)
 # clicksxscore(dados)  # Gráfico Scatter + Pearson e Spearman (Terminal)
-ctrxscore(dados)  # Gráfico Scatter + Pearson e Spearman (Terminal)
+# ctrxscore(dados)  # Gráfico Scatter + Pearson e Spearman (Terminal)
+cpcxscore(dados)  # Gráfico Scatter + Pearson e Spearman (Terminal)
