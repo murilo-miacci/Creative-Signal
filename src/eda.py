@@ -416,6 +416,33 @@ def musicvoicexscore(raw: pd.DataFrame) -> None:
     plt.show()
 
 
+def impressionsxscore(raw: pd.DataFrame) -> None:
+    """
+    ———————————————————————————————————————————————————————————————————————————
+    Impressões x Score
+    (Número de impressões)
+    ———————————————————————————————————————————————————————————————————————————
+    O número de impressões apresenta correlações muito próximas de zero com o
+    score, sendo levemente negativa em Pearson (-0,080) e positiva em
+    Spearman (0,032). Não é observada uma relação relevante nessa amostra.
+    """
+    df = raw[["impressions", "klike_score"]].dropna()
+
+    pearson = df["impressions"].corr(df["klike_score"])
+    print(f"Correlação (Pearson): {pearson}")
+    spearman = df["impressions"].corr(df["klike_score"], method="spearman")
+    print(f"Correlação (Spearman): {spearman}")
+
+    df.plot.scatter(x="impressions", y="klike_score", alpha=0.5)
+    plt.title("Score por Número de Impressões")
+    plt.suptitle("")
+    plt.xlabel("Impressões")
+    plt.ylabel("Score")
+    plt.xticks(rotation=30)
+    plt.tight_layout()
+    plt.show()
+
+
 # =============================================================================
 #                              Painel EDA (Score)
 # =============================================================================
@@ -433,4 +460,5 @@ def musicvoicexscore(raw: pd.DataFrame) -> None:
 # hookxscore(dados)  # Gráfico Boxplot + Estatísticas (Terminal)
 # facexscore(dados)  # Gráfico Boxplot + Estatísticas (Terminal)
 # textxscore(dados)  # Gráfico Boxplot + Estatísticas (Terminal)
-musicvoicexscore(dados)  # Gráfico Scatter + Pearson e Spearman (Terminal)
+# musicvoicexscore(dados)  # Gráfico Scatter + Pearson e Spearman (Terminal)
+impressionsxscore(dados)  # Gráfico Scatter + Pearson e Spearman (Terminal)
