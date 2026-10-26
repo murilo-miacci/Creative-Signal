@@ -470,6 +470,33 @@ def clicksxscore(raw: pd.DataFrame) -> None:
     plt.show()
 
 
+def ctrxscore(raw: pd.DataFrame) -> None:
+    """
+    ———————————————————————————————————————————————————————————————————————————
+    CTR x Score
+    (Taxa de cliques)
+    ———————————————————————————————————————————————————————————————————————————
+    A taxa de cliques apresenta uma associação positiva moderada com o score,
+    tanto em Pearson (0,503) quanto em Spearman (0,539). É observado que
+    criativos com maior CTR tendem a apresentar scores maiores.
+    """
+    df = raw[["ctr", "klike_score"]].dropna()
+
+    pearson = df["ctr"].corr(df["klike_score"])
+    print(f"Correlação (Pearson): {pearson}")
+    spearman = df["ctr"].corr(df["klike_score"], method="spearman")
+    print(f"Correlação (Spearman): {spearman}")
+
+    df.plot.scatter(x="ctr", y="klike_score", alpha=0.5)
+    plt.title("Score por Taxa de Cliques")
+    plt.suptitle("")
+    plt.xlabel("CTR")
+    plt.ylabel("Score")
+    plt.xticks(rotation=30)
+    plt.tight_layout()
+    plt.show()
+
+
 # =============================================================================
 #                              Painel EDA (Score)
 # =============================================================================
@@ -489,4 +516,5 @@ def clicksxscore(raw: pd.DataFrame) -> None:
 # textxscore(dados)  # Gráfico Boxplot + Estatísticas (Terminal)
 # musicvoicexscore(dados)  # Gráfico Scatter + Pearson e Spearman (Terminal)
 # impressionsxscore(dados)  # Gráfico Scatter + Pearson e Spearman (Terminal)
-clicksxscore(dados)  # Gráfico Scatter + Pearson e Spearman (Terminal)
+# clicksxscore(dados)  # Gráfico Scatter + Pearson e Spearman (Terminal)
+ctrxscore(dados)  # Gráfico Scatter + Pearson e Spearman (Terminal)
