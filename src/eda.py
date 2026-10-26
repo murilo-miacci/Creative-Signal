@@ -578,6 +578,33 @@ def revenuexscore(raw: pd.DataFrame) -> None:
     plt.show()
 
 
+def roasxscore(raw: pd.DataFrame) -> None:
+    """
+    ———————————————————————————————————————————————————————————————————————————
+    ROAS x Score
+    (Retorno sobre o gasto com anúncios)
+    ———————————————————————————————————————————————————————————————————————————
+    O retorno sobre o gasto com anúncios apresenta uma associação positiva
+    fraca com o score, com Pearson de 0,189 e Spearman de 0,247. É vista uma
+    ligeira tendência de scores maiores nos criativos com maior ROAS.
+    """
+    df = raw[["roas", "klike_score"]].dropna()
+
+    pearson = df["roas"].corr(df["klike_score"])
+    print(f"Correlação (Pearson): {pearson}")
+    spearman = df["roas"].corr(df["klike_score"], method="spearman")
+    print(f"Correlação (Spearman): {spearman}")
+
+    df.plot.scatter(x="roas", y="klike_score", alpha=0.5)
+    plt.title("Score por Retorno sobre o Gasto com Anúncios")
+    plt.suptitle("")
+    plt.xlabel("ROAS")
+    plt.ylabel("Score")
+    plt.xticks(rotation=30)
+    plt.tight_layout()
+    plt.show()
+
+
 # =============================================================================
 #                              Painel EDA (Score)
 # =============================================================================
@@ -601,4 +628,5 @@ def revenuexscore(raw: pd.DataFrame) -> None:
 # ctrxscore(dados)  # Gráfico Scatter + Pearson e Spearman (Terminal)
 # cpcxscore(dados)  # Gráfico Scatter + Pearson e Spearman (Terminal)
 # spendxscore(dados)  # Gráfico Scatter + Pearson e Spearman (Terminal)
-revenuexscore(dados)  # Gráfico Scatter + Pearson e Spearman (Terminal)
+# revenuexscore(dados)  # Gráfico Scatter + Pearson e Spearman (Terminal)
+roasxscore(dados)  # Gráfico Scatter + Pearson e Spearman (Terminal)
