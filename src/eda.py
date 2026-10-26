@@ -361,6 +361,35 @@ def facexscore(raw: pd.DataFrame) -> None:
     plt.show()
 
 
+def textxscore(raw: pd.DataFrame) -> None:
+    """
+    ———————————————————————————————————————————————————————————————————————————
+    Densidade de Texto x Score
+    (low, medium, high)
+    ———————————————————————————————————————————————————————————————————————————
+    É fortemente observado um maior score na densidade média de texto no
+    criativo, seguido de densidade baixa e alta, com intervalos grandes entre
+    os marcadores (65, 59 e 60, respectivamente).
+    """
+    df = raw[["text_density", "klike_score"]]
+    df["text_density"] = pd.Categorical(
+        df["text_density"],
+        categories=["low", "medium", "high"],
+    )
+    groups = df.groupby("text_density", observed=True)
+    resume = groups.agg(["count", "mean", "median", "std"])
+    print(resume)
+
+    df.boxplot(column="klike_score", by="text_density", grid=False)
+    plt.title("Score por Densidade de Texto")
+    plt.suptitle("")
+    plt.xlabel("Densidade")
+    plt.ylabel("Score")
+    plt.xticks(rotation=30)
+    plt.tight_layout()
+    plt.show()
+
+
 # =============================================================================
 #                              Painel EDA (Score)
 # =============================================================================
@@ -376,4 +405,5 @@ def facexscore(raw: pd.DataFrame) -> None:
 # videodurationxscore(dados)  # Gráfico Scatter + Pearson e Spearman (Terminal)
 # ctaxscore(dados)  # Gráfico Boxplot + Estatísticas (Terminal)
 # hookxscore(dados)  # Gráfico Boxplot + Estatísticas (Terminal)
-facexscore(dados)  # Gráfico Boxplot + Estatísticas (Terminal)
+# facexscore(dados)  # Gráfico Boxplot + Estatísticas (Terminal)
+textxscore(dados)
